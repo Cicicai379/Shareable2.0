@@ -14,40 +14,40 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(red: 97/255, green: 29/255, blue: 53/255, alpha: 1.0)
         title = "Profile"
-        configureNavigationBar()
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 1
-        layout.minimumInteritemSpacing = 1
-        let size = (view.width-4)/3
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-        layout.itemSize = CGSize(width: size, height: size)
-
-        collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
-        
-
-        //CELL
-        collectionView?.register(PhotoCollectionViewCell.self,forCellWithReuseIdentifier:PhotoCollectionViewCell.identifier)
-
-
-        //HEADERS
-        collectionView?.register(ProfileInfoHeaderCollectionReusableView.self,
-                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileInfoHeaderCollectionReusableView.identifier)
-        collectionView?.register(ProfileTabCollectionReusableView.self,
-                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileTabCollectionReusableView.identifier)
-
-        collectionView?.delegate=self
-        collectionView?.dataSource=self
-        guard let collectionView = collectionView else{
-            return
-        }
-
-        view.addSubview(collectionView)
-        
-        
+//        configureNavigationBar()
+//        
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .vertical
+//        layout.minimumLineSpacing = 1
+//        layout.minimumInteritemSpacing = 1
+//        let size = (view.width-4)/3
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+//        layout.itemSize = CGSize(width: size, height: size)
+//
+//        collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
+//        
+//
+//        //CELL
+//        collectionView?.register(PhotoCollectionViewCell.self,forCellWithReuseIdentifier:PhotoCollectionViewCell.identifier)
+//
+//
+//        //HEADERS
+//        collectionView?.register(ProfileInfoHeaderCollectionReusableView.self,
+//                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileInfoHeaderCollectionReusableView.identifier)
+//        collectionView?.register(ProfileTabCollectionReusableView.self,
+//                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileTabCollectionReusableView.identifier)
+//
+//        collectionView?.delegate=self
+//        collectionView?.dataSource=self
+//        guard let collectionView = collectionView else{
+//            return
+//        }
+//
+//        view.addSubview(collectionView)
+//        
+//        
     }
     
     override func viewDidLayoutSubviews() {

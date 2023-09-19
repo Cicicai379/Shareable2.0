@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
 
     private let usernameEmailField:UITextField = {
         let field = UITextField()
-        field.placeholder = "Usrname or Email..."
+        field.placeholder = "Username or Email..."
         field.returnKeyType = .next
         field.leftViewMode = .always
         field.leftView = UIView(frame: CGRect(x: 0, y:0, width:10, height:0))
@@ -30,13 +30,44 @@ class LoginViewController: UIViewController {
         return field
     }()
     
-    private let passwordField:UITextField = {
+//    private let passwordField:UITextField = {
+//        let field = UITextField()
+//        field.isSecureTextEntry=true
+//        field.placeholder = "Password"
+//        field.returnKeyType = .continue
+//        field.leftViewMode = .always
+//        field.leftView = UIView(frame: CGRect(x: 0, y:0, width:10, height:0))
+//        field.autocapitalizationType = .none
+//        field.autocorrectionType = .no
+//        field.layer.masksToBounds = true
+//        field.layer.cornerRadius = Constants.cornerRadius
+//        field.layer.borderWidth = 1.0
+//        field.layer.borderColor = UIColor.secondaryLabel.cgColor
+//        field.backgroundColor = .secondarySystemBackground
+//
+//        return field
+//    }()
+//
+//    private let showPassword:UIButton = {
+//        let button = UIButton()
+//        button.setTitle("show", for:.normal)
+//        button.layer.masksToBounds = true
+//        button.layer.cornerRadius = Constants.cornerRadius
+//        button.addTarget(LoginViewController.self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+//        return button
+//    }()
+//    @objc private func togglePasswordVisibility() {
+//        passwordField.isSecureTextEntry.toggle()
+//        let buttonTitle = passwordField.isSecureTextEntry ? "show" : "hide"
+//        showPassword.setTitle(buttonTitle, for: .normal)
+//    }
+    private let passwordField: UITextField = {
         let field = UITextField()
-        field.isSecureTextEntry=true
+        field.isSecureTextEntry = true
         field.placeholder = "Password"
         field.returnKeyType = .continue
         field.leftViewMode = .always
-        field.leftView = UIView(frame: CGRect(x: 0, y:0, width:10, height:0))
+        field.leftView = UIView(frame: CGRect(x: 0, y:0, width: 10, height: 0))
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.layer.masksToBounds = true
@@ -45,15 +76,33 @@ class LoginViewController: UIViewController {
         field.layer.borderColor = UIColor.secondaryLabel.cgColor
         field.backgroundColor = .secondarySystemBackground
 
+        let showButton = UIButton(type: .custom)
+        showButton.tintColor = .black
+        showButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        showButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        showButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        showButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
+        field.rightView = showButton
+        field.rightViewMode = .always
+
         return field
     }()
-    
+
+    @objc private func togglePasswordVisibility() {
+        passwordField.isSecureTextEntry.toggle()
+        let buttonImage = passwordField.isSecureTextEntry ? UIImage(systemName: "eye.fill") : UIImage(systemName: "eye.slash.fill")
+        (passwordField.rightView as? UIButton)?.setImage(buttonImage, for: .normal)
+    }
     private let loginButton:UIButton = {
         let button = UIButton()
         button.setTitle("Log In",for:.normal)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = Constants.cornerRadius
-        button.backgroundColor = .systemBlue
+        let color = UIColor(red: 97/255, green: 29/255, blue: 53/255, alpha: 1.0)
+       
+        button.backgroundColor = color
+        
+//        button.backgroundColor = UIColor(hex: "#610e10")
         button.setTitleColor(.white, for: .normal)
         return button
     }()
@@ -74,7 +123,6 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.label,for:.normal)
         button.setTitle("New User? Create an Account",for:.normal)
-      
         return button
     }()
     
@@ -84,6 +132,14 @@ class LoginViewController: UIViewController {
         let backgroundImageView = UIImageView(image:UIImage(named:"Header"))
         header.addSubview(backgroundImageView)
         return header
+    }()
+    
+    private let titleText:UILabel = {
+        let text = UILabel()
+        let attributedString = NSMutableAttributedString(string: "Login")
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 40), range: NSRange(location: 0, length: attributedString.length))
+        text.attributedText = attributedString
+        return text
     }()
     
     override func viewDidLoad() {
@@ -105,14 +161,8 @@ class LoginViewController: UIViewController {
         
         
         super.viewDidLayoutSubviews()
-        
-        //assign frames
-//        headerView.frame = CGRect(x: 0,
-//                                  y: 0.0,
-//                                  width: view.width,
-//                                  height: view.height/3.0)
-//
-         usernameEmailField.frame = CGRect(x: 25,
+
+        usernameEmailField.frame = CGRect(x: 25,
                                           y: 15 + view.height/3.0,
                                           width: view.width - 50,
                                           height: 52.0)
@@ -140,7 +190,10 @@ class LoginViewController: UIViewController {
                                     width:view.width - 20,
                                     height: 50.0)
 
-
+        titleText.frame = CGRect(x: view.width/3.0+10,
+                                 y: view.height-view.safeAreaInsets.bottom-600,
+                                    width:view.width - 20,
+                                    height: 50.0)
         configureHeaderView()
     }
     
@@ -172,6 +225,7 @@ class LoginViewController: UIViewController {
         view.addSubview(termsButton)
         view.addSubview(createAccountButton)
         view.addSubview(headerView)
+        view.addSubview(titleText)
     }
 
     @objc private func didTapLoginButton(){
