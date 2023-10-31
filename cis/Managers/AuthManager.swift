@@ -24,23 +24,28 @@ public class AuthManager
         DatabaseManager.shared.canCreateNewUser(with: email, username: username){ canCreate in
             if canCreate{
                 Auth.auth().createUser(withEmail: email, password: password){result,error in
-                    guard  result == nil, error == nil else{
-                        //firebase error
-                        completion(false)
-                        return
-                    }
+//                    guard  result == nil, error == nil else{
+//                        //firebase error
+//                        print("firebase error")
+//                        completion(true)
+//                        return
+//                    }
                     // insert to database
                     DatabaseManager.shared.insertNewUser(with:email, username:username){inserted in
                         if inserted{
+                            print("auth succeded")
                             completion(true)
                             return
                         }
+                        print("database failed")
                         completion(false)
                         return
                     }
                 }
             } else{
                 //username or email not valid
+                print("username or email not valid")
+
                 completion(false)
                 return
             }

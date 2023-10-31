@@ -152,11 +152,23 @@ class RegistrationViewController: UIViewController {
                 let username = usernameField.text, !username.isEmpty else {
                     return
                 }
+        print("registering...")
+
         AuthManager.shared.registerNewUser(username: username, email: email, password: password){registered in
             if registered {
                 //good to go
-            }else{
-                //failed
+                let alert = UIAlertController(title: "Registration Succeeded", message: "Please login.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+                                print("succeed")
+            }else {
+                // Registration failed, show an alert
+                let alert = UIAlertController(title: "Registration Failed", message: "Unable to register the user.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                print("failed")
+
             }
             
         }

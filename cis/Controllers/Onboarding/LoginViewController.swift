@@ -78,7 +78,7 @@ class LoginViewController: UIViewController {
 
         let showButton = UIButton(type: .custom)
         showButton.tintColor = .black
-        showButton.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        showButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
         showButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         showButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         showButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
@@ -90,7 +90,7 @@ class LoginViewController: UIViewController {
 
     @objc private func togglePasswordVisibility() {
         passwordField.isSecureTextEntry.toggle()
-        let buttonImage = passwordField.isSecureTextEntry ? UIImage(systemName: "eye.fill") : UIImage(systemName: "eye.slash.fill")
+        let buttonImage = passwordField.isSecureTextEntry ? UIImage(systemName: "eye.slash.fill") : UIImage(systemName: "eye.fill")
         (passwordField.rightView as? UIButton)?.setImage(buttonImage, for: .normal)
     }
     private let loginButton:UIButton = {
@@ -281,9 +281,8 @@ class LoginViewController: UIViewController {
         return
     }
     @objc private func didTapCreateAccountButton(){
-        let vc = RegistrationViewController()
-        vc.title = "Create Account"
-        present(vc, animated: true)
+        let loginVC = RegistrationViewController()
+        present(loginVC, animated: false)
         return
     }
     /*

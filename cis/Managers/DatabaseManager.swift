@@ -25,12 +25,45 @@ public class DatabaseManager
             if error == nil{
                 //succeed
                 completion ( true)
+                print("database succeded")
                 return
             }else{
                 //failed
                 completion (false)
+                print("database failed")
+
                 return
             }
         }
     }
+    public func getUsername(forEmail email: String) -> String? {
+        let databaseRef = Database.database().reference()
+        var foundUsername: String?
+        
+        databaseRef.observeSingleEvent(of: .value) { (snapshot) in
+            if let topLevelDict = snapshot.value as? [String: [String: String]] {
+                print("Top-level dictionary: \(topLevelDict)")
+                for (key, value) in topLevelDict {
+                               if let username = value["username"] {
+                                   print("Email: \(key), Username: \(username)")
+                               }
+                           }
+                for (key, value) in topLevelDict {
+                    print(key)
+                    if email == key {
+                        if let username = value["username"] {
+                            foundUsername = username // Found the matching email, assign the username
+                        }
+                        print("!!"+(foundUsername ?? "not")!)
+                        break // Exit the loop after finding the email
+                    }
+                }
+            }
+        }
+
+        return foundUsername
+    }
+
+    // Usage:
+   
 }

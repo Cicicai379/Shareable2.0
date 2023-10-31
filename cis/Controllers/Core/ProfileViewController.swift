@@ -4,55 +4,72 @@
 //
 //  Created by cici on 6/6/2023.
 //
-
+import Firebase
 import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    var email: String?
+        var uid: String?
     private var collectionView: UICollectionView?
     private var userPosts = [UserPost]()
+    
+    private let textView:UILabel = {
+        let text = UILabel()
+        let attributedString = NSMutableAttributedString(string: "Login")
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 20), range: NSRange(location: 0, length: attributedString.length))
+        text.attributedText = attributedString
+        return text
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 97/255, green: 29/255, blue: 53/255, alpha: 1.0)
         title = "Profile"
-//        configureNavigationBar()
-//        
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.minimumLineSpacing = 1
-//        layout.minimumInteritemSpacing = 1
-//        let size = (view.width-4)/3
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-//        layout.itemSize = CGSize(width: size, height: size)
-//
-//        collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
-//        
-//
-//        //CELL
-//        collectionView?.register(PhotoCollectionViewCell.self,forCellWithReuseIdentifier:PhotoCollectionViewCell.identifier)
-//
-//
-//        //HEADERS
-//        collectionView?.register(ProfileInfoHeaderCollectionReusableView.self,
-//                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileInfoHeaderCollectionReusableView.identifier)
-//        collectionView?.register(ProfileTabCollectionReusableView.self,
-//                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier:ProfileTabCollectionReusableView.identifier)
-//
-//        collectionView?.delegate=self
-//        collectionView?.dataSource=self
-//        guard let collectionView = collectionView else{
-//            return
-//        }
-//
-//        view.addSubview(collectionView)
-//        
-//        
+        configureNavigationBar()
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 1
+        layout.minimumInteritemSpacing = 1
+        let size = (view.width-4)/3
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+        layout.itemSize = CGSize(width: size, height: size)
+        collectionView = UICollectionView(frame:.zero, collectionViewLayout: layout)
+        
+        if let currentUser = Auth.auth().currentUser {
+            // User is authenticated
+            // Retrieve user information
+            uid = currentUser.uid
+            email = currentUser.email
+            textView.text = "username: \(email ?? "N/A")"
+            let processedEmail = email?.safeDatabaseKey()
+            print(processedEmail ?? "non exist")
+            email?.safeDatabaseKey()
+            if let username = DatabaseManager.shared.getUsername(forEmail: email ?? "?") {
+                print("Username for email '\(email)': \(username)")
+            } else {
+                print("Username not found for email '\(email)'")
+            }
+        } else {
+            // User is not authenticated
+            print("No authenticated user")
+        }
+      
+    
+        view.addSubview(textView)
     }
+    
+   
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView?.frame = view.bounds
+        textView.frame = CGRect(x: view.bounds.width/3 - textView.bounds.width,
+                                 y: view.height-view.safeAreaInsets.bottom-600,
+                                    width:view.width,
+                                    height: 50.0)
+
     }
     
     private func configureNavigationBar(){
